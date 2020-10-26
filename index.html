@@ -25,10 +25,66 @@
             <div class="col-md-8">
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
-                        <h1 class="display-4" ></h1>
-                        <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its
-                            parent.</p>
-                        <div class="city"> </div>
+                        <h1 class="date"></h1>
+                        <h1 class="cityname"></h1>
+                        <h2 class="temp"></h2>
+                        <h3 class="humidity"></h3>
+                        <h3 class="windspeed"></h3>
+                        <h3 class="uv"></h3>
+                    </div>
+                </div>
+                <hr>
+                <h3> 5 DAY FORECAST: </h3>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="date1"></h5>
+                                <h4 class="temp1"></h4>
+                                <h4 class="humidity1"></h4>
+                                <h5 class="wind1"></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="date2"></h5>
+                                <h4 class="temp2"></h4>
+                                <h4 class="humidity2"></h4>
+                                <h5 class="wind2"></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="date3"></h5>
+                                <h4 class="temp3"></h4>
+                                <h4 class="humidity3"></h4>
+                                <h5 class="wind3"></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="date4"></h5>
+                                <h4 class="temp4"></h4>
+                                <h4 class="humidity4"></h4>
+                                <h5 class="wind4"></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="date5"></h5>
+                                <h4 class="temp5"></h4>
+                                <h4 class="humidity5"></h4>
+                                <h5 class="wind5"></h5>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -41,7 +97,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
-
 
         $("#search").on("click", function (event) {
 
@@ -58,12 +113,55 @@
             })
                 .then(function (response) {
                     console.log(response);
-                    // var data = JSON.stringify(response.base)
-                    // $("#response").append(data)
+                    $(".cityname").html(response.name);
+                    // convert below to kelvin
+                    var tempF = (response.main.temp - 273.15) * 1.80 + 32;
+                    $(".temp").html("Temp F: " + tempF.toFixed(0));
+                    $(".humidity").html("Humidity: " + response.main.humidity + "%");
+                    $(".windspeed").html("Wind: " + response.wind.speed + "MPH");
+                })
 
+            var APIKey = "2f2992a532bb0393ae66653d8f1442b5";
+            var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName +
+                "&appid=" + APIKey;
+
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            })
+                .then(function (response) {
+                    console.log(response);
+                    $(".date1").html(response.list[1].dt_txt);
+                    $(".date2").html(response.list[2].dt_txt);
+                    $(".date3").html(response.list[3].dt_txt);
+                    $(".date4").html(response.list[4].dt_txt);
+                    $(".date5").html(response.list[5].dt_txt);
+
+                    var tempF = (response.list[1].main.temp - 273.15) * 1.80 + 32;
+                    $(".temp1").html("Temp F: " + tempF.toFixed(0));
+                    var tempF = (response.list[2].main.temp - 273.15) * 1.80 + 32;
+                    $(".temp2").html("Temp F: " + tempF.toFixed(0));
+                    var tempF = (response.list[3].main.temp - 273.15) * 1.80 + 32;
+                    $(".temp3").html("Temp F: " + tempF.toFixed(0));
+                    var tempF = (response.list[4].main.temp - 273.15) * 1.80 + 32;
+                    $(".temp4").html("Temp F: " + tempF.toFixed(0));
+                    var tempF = (response.list[5].main.temp - 273.15) * 1.80 + 32;
+                    $(".temp5").html("Temp F: " + tempF.toFixed(0));
+
+                    $(".humidity1").html("Humidity: " + response.list[1].main.humidity + "%");
+                    $(".humidity2").html("Humidity: " + response.list[2].main.humidity + "%");
+                    $(".humidity3").html("Humidity: " + response.list[3].main.humidity + "%");
+                    $(".humidity4").html("Humidity: " + response.list[4].main.humidity + "%");
+                    $(".humidity5").html("Humidity: " + response.list[5].main.humidity + "%");
+
+                    $(".wind1").html("Wind: " + response.list[1].wind.speed + "MPH");
+                    $(".wind2").html("Wind: " + response.list[2].wind.speed + "MPH");
+                    $(".wind3").html("Wind: " + response.list[3].wind.speed + "MPH");
+                    $(".wind4").html("Wind: " + response.list[4].wind.speed + "MPH");
+                    $(".wind5").html("Wind: " + response.list[5].wind.speed + "MPH");
 
                 })
-                })
+        })
 
 
 
